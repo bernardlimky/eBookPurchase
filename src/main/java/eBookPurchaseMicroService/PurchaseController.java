@@ -62,7 +62,6 @@ public class PurchaseController {
 
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<PurchaseInformation> getAllPurchaseDetails() {
-        // Get all payment info
         Iterable<PurchaseInformation> purchaseDetails = purchaseRepository.findAll();
 
         for (PurchaseInformation purchase : purchaseDetails) {
