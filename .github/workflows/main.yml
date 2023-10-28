@@ -1,0 +1,36 @@
+
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '20'
+      - name: Build with Maven
+        run: |
+            mvn package -Dmaven.test.skip
+      - name: Build Docker Image
+        run: docker build -t ebook-payment-module:ebook-payment -f Dockerfile .
+      - name: Generate Deployment Package
+        run: zip -r deploy.zip * 
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v14
+        with:
+            aws_access_key: ${{ secrets.ACC_ACCESS_KEY }}
+            aws_secret_key: ${{ secrets.ACC_SECRET_ACCESS_KEY }}
+            application_name: eBookPayment
+            environment_name: EBookPayment-env
+            version_label: ${{github.SHA}}
+            region: ap-southeast-1
+            deployment_package: deploy.zip
