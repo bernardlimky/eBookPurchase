@@ -22,7 +22,7 @@ public class PurchaseController {
     private PurchaseRepository purchaseRepository;
 
     // Secret key for encryption and decryption
-    private SecretKey secretKey;
+    /*private SecretKey secretKey;
 
     // Constructor to initialize the secret key
     public PurchaseController() {
@@ -33,15 +33,15 @@ public class PurchaseController {
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize secret key");
         }
-    }
+    }*/
 
     @PostMapping(path = "/details")
     public @ResponseBody String addNewPurchase (@RequestParam String cardName, @RequestParam String cardNumber,
                                                 @RequestParam String cardExpiryDate, @RequestParam String cvv) {
 
         // Encrypt the cardNumber and cvv
-        String encryptedCardNumber = encrypt(cardNumber);
-        String encryptedCvv = encrypt(cvv);
+        //String encryptedCardNumber = encrypt(cardNumber);
+        //String encryptedCvv = encrypt(cvv);
 
         // Set the date & time for purchase
         Date currentDate = new Date();
@@ -50,9 +50,11 @@ public class PurchaseController {
 
         PurchaseInformation details = new PurchaseInformation();
         details.setCardName(cardName);
-        details.setCardNumber(encryptedCardNumber);
+        //details.setCardNumber(encryptedCardNumber);
+        details.setCardNumber(cardNumber);
         details.setCardExpiryDate(cardExpiryDate);
-        details.setCvv(encryptedCvv);
+        //details.setCvv(encryptedCvv);
+        details.setCvv(cvv);
         details.setPurchaseDate(formattedDate);
         purchaseRepository.save(details);
         return "Saved";
@@ -62,20 +64,20 @@ public class PurchaseController {
     public @ResponseBody Iterable<PurchaseInformation> getAllPurchaseDetails() {
         Iterable<PurchaseInformation> purchaseDetails = purchaseRepository.findAll();
 
-        for (PurchaseInformation purchase : purchaseDetails) {
+        /*for (PurchaseInformation purchase : purchaseDetails) {
             // Decrypt the cardNumber and cvv
             String decryptedCardNumber = decrypt(purchase.getCardNumber());
             String decryptedCvv = decrypt(purchase.getCvv());
 
             purchase.setCardNumber(decryptedCardNumber);
             purchase.setCvv(decryptedCvv);
-        }
+        }*/
 
         return purchaseDetails;
     }
 
     // Testing
-    @GetMapping(path = "/id")
+    /*@GetMapping(path = "/id")
     public @ResponseBody PurchaseInformation getPurchaseDetailsById(@PathVariable Long id) {
         Optional<PurchaseInformation> purchaseOptional = purchaseRepository.findById(id);
         if (purchaseOptional.isPresent()) {
@@ -115,5 +117,5 @@ public class PurchaseController {
         } catch (Exception e) {
             throw new RuntimeException("Failed to decrypt data");
         }
-    }
+    }*/
 }
