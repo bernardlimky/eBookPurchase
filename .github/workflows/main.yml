@@ -29,8 +29,8 @@ jobs:
         with:
             aws_access_key: ${{ secrets.ACC_ACCESS_KEY }}
             aws_secret_key: ${{ secrets.ACC_SECRET_ACCESS_KEY }}
-            application_name: ebookPurchase
-            environment_name: EbookPurchase-env
+            application_name: ebookpayment1
+            environment_name: Ebookpayment1-env 
             version_label: ${{github.SHA}}
             region: ap-southeast-1
             deployment_package: deploy.zip
