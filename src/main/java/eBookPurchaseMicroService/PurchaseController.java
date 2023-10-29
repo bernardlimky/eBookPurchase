@@ -83,10 +83,6 @@ public class PurchaseController {
         if (purchaseOptional.isPresent()) {
             PurchaseInformation purchase = purchaseOptional.get();
 
-            // Decrypt the cardNumber and cvv
-            //String decryptedCardNumber = decrypt(purchase.getCardNumber());
-            //String decryptedCvv = decrypt(purchase.getCvv());
-
             // Create a PurchaseDetails object with cardName and purchaseDate
             PurchaseInformation purchaseDetails = new PurchaseInformation();
             purchaseDetails.setCardName(purchase.getCardName());
