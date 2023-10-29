@@ -77,6 +77,7 @@ public class PurchaseController {
         return purchaseDetails;
     }
 
+    // Testing
     @GetMapping(path = "/id")
     public @ResponseBody PurchaseInformation getPurchaseDetailsById(@PathVariable Long id) {
         Optional<PurchaseInformation> purchaseOptional = purchaseRepository.findById(id);
