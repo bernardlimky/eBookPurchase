@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/purchase")
@@ -75,6 +76,28 @@ public class PurchaseController {
 
         return purchaseDetails;
     }
+
+    @GetMapping(path = "/id")
+    public @ResponseBody PurchaseInformation getPurchaseDetailsById(@PathVariable Long id) {
+        Optional<PurchaseInformation> purchaseOptional = purchaseRepository.findById(id);
+        if (purchaseOptional.isPresent()) {
+            PurchaseInformation purchase = purchaseOptional.get();
+
+            // Decrypt the cardNumber and cvv
+            //String decryptedCardNumber = decrypt(purchase.getCardNumber());
+            //String decryptedCvv = decrypt(purchase.getCvv());
+
+            // Create a PurchaseDetails object with cardName and purchaseDate
+            PurchaseInformation purchaseDetails = new PurchaseInformation();
+            purchaseDetails.setCardName(purchase.getCardName());
+            purchaseDetails.setPurchaseDate(purchase.getPurchaseDate());
+
+            return purchaseDetails;
+        } else {
+            throw new RuntimeException("Purchase not found with ID: " + id);
+        }
+    }
+
 
     // Method to encrypt data
     private String encrypt(String data) {
