@@ -29,8 +29,8 @@ jobs:
         with:
             aws_access_key: ${{ secrets.ACC_ACCESS_KEY }}
             aws_secret_key: ${{ secrets.ACC_SECRET_ACCESS_KEY }}
-            application_name: E-Paperback_Payment
-            environment_name: E-PaperbackPayment-env 
+            application_name: ePaperbackPaymentMS
+            environment_name: EPaperbackPaymentMS-env
             version_label: ${{github.SHA}}
             region: ap-southeast-1
             deployment_package: deploy.zip
