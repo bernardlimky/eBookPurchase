@@ -29,8 +29,8 @@ jobs:
         with:
             aws_access_key: ${{ secrets.ACC_ACCESS_KEY }}
             aws_secret_key: ${{ secrets.ACC_SECRET_ACCESS_KEY }}
-            application_name: e_paperback_payment_micro_service
-            environment_name: Epaperbackpaymentmicroservice-env
+            application_name: ePaperback_Payment_Micro_Service
+            environment_name: EPaperbackPaymentMicroService-env
             version_label: ${{github.SHA}}
             region: ap-southeast-1
             deployment_package: deploy.zip
