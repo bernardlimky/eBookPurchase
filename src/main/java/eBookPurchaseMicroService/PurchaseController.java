@@ -5,11 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -31,7 +28,7 @@ public class PurchaseController {
     public PurchaseController() {
         try {
             // Read the secret key from a file
-            byte[] keyBytes = Files.readAllBytes(Paths.get("secret.key"));
+            byte[] keyBytes = Files.readAllBytes(Paths.get("src/main/java/eBookPurchaseMicroService/secret.key"));
             secretKey = new SecretKeySpec(keyBytes, "AES");
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize secret key");
