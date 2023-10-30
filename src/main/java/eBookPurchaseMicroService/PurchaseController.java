@@ -57,7 +57,7 @@ public class PurchaseController {
         details.setCvv(cvv);
         details.setPurchaseDate(formattedDate);
         purchaseRepository.save(details);
-        return "Saved";
+        return "Payment submit";
     }
 
     @GetMapping(path = "/all")
