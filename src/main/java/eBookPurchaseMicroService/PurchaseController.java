@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -34,6 +35,20 @@ public class PurchaseController {
             throw new RuntimeException("Failed to initialize secret key");
         }
     }*/
+
+    public class SecretKeyReader {
+        public static void main(String[] args) {
+            String secretKey = System.getenv("SECRET_KEY");
+            if (secretKey != null && !secretKey.isEmpty()) {
+                byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+                System.out.println("SECRET_KEY found");
+                // Now you can use the keyBytes in your code
+                // ...
+            } else {
+                System.err.println("SECRET_KEY environment variable is not set.");
+            }
+        }
+    }
 
     @PostMapping(path = "/details")
     public @ResponseBody String addNewPurchase (@RequestParam String cardName, @RequestParam String cardNumber,

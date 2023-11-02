@@ -34,3 +34,5 @@ jobs:
             version_label: ${{github.SHA}}
             region: ap-southeast-1
             deployment_package: deploy.zip
+        env:
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
