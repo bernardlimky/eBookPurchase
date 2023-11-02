@@ -7,13 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/purchase")
@@ -23,30 +19,21 @@ public class PurchaseController {
     private PurchaseRepository purchaseRepository;
 
     // Secret key for encryption and decryption
-    /*private SecretKey secretKey;
+    private SecretKey secretKey;
 
     // Constructor to initialize the secret key
     public PurchaseController() {
         try {
             // Read the secret key from a file
-            byte[] keyBytes = Files.readAllBytes(Paths.get("src/main/java/eBookPurchaseMicroService/secret.key"));
-            secretKey = new SecretKeySpec(keyBytes, "AES");
+            //byte[] keyBytes = Files.readAllBytes(Paths.get("src/main/java/eBookPurchaseMicroService/secret.key"));
+            //secretKey = new SecretKeySpec(keyBytes, "AES");
+            String secretKeyBase64 = System.getenv("SECRET_KEY");
+            if (secretKeyBase64 != null && !secretKeyBase64.isEmpty()) {
+                byte[] decodedKey = Base64.getDecoder().decode(secretKeyBase64);
+                secretKey = new SecretKeySpec(decodedKey, "AES"); // Replace "AES" with your key algorithm
+            }
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize secret key");
-        }
-    }*/
-
-    public class SecretKeyReader {
-        public static void main(String[] args) {
-            String secretKey = System.getenv("SECRET_KEY");
-            if (secretKey != null && !secretKey.isEmpty()) {
-                byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
-                System.out.println("SECRET_KEY found");
-                // Now you can use the keyBytes in your code
-                // ...
-            } else {
-                System.err.println("SECRET_KEY environment variable is not set.");
-            }
         }
     }
 
@@ -55,8 +42,8 @@ public class PurchaseController {
                                                 @RequestParam String cardExpiryDate, @RequestParam String cvv) {
 
         // Encrypt the cardNumber and cvv
-        //String encryptedCardNumber = encrypt(cardNumber);
-        //String encryptedCvv = encrypt(cvv);
+        String encryptedCardNumber = encrypt(cardNumber);
+        String encryptedCvv = encrypt(cvv);
 
         // Set the date & time for purchase
         Date currentDate = new Date();
@@ -65,11 +52,11 @@ public class PurchaseController {
 
         PurchaseInformation details = new PurchaseInformation();
         details.setCardName(cardName);
-        //details.setCardNumber(encryptedCardNumber);
-        details.setCardNumber(cardNumber);
+        details.setCardNumber(encryptedCardNumber);
+        //details.setCardNumber(cardNumber);
         details.setCardExpiryDate(cardExpiryDate);
-        //details.setCvv(encryptedCvv);
-        details.setCvv(cvv);
+        details.setCvv(encryptedCvv);
+        //details.setCvv(cvv);
         details.setPurchaseDate(formattedDate);
         purchaseRepository.save(details);
         return "Payment added";
@@ -107,7 +94,7 @@ public class PurchaseController {
         } else {
             throw new RuntimeException("Purchase not found with ID: " + id);
         }
-    }
+    }*/
 
 
     // Method to encrypt data
@@ -132,5 +119,5 @@ public class PurchaseController {
         } catch (Exception e) {
             throw new RuntimeException("Failed to decrypt data");
         }
-    }*/
+    }
 }
