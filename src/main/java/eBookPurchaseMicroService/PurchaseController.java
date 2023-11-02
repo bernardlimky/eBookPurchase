@@ -27,6 +27,7 @@ public class PurchaseController {
             // Read the secret key from a file
             //byte[] keyBytes = Files.readAllBytes(Paths.get("src/main/java/eBookPurchaseMicroService/secret.key"));
             //secretKey = new SecretKeySpec(keyBytes, "AES");
+            // Read the secret.key from GitHub environment variable
             String secretKeyBase64 = System.getenv("SECRET_KEY");
             if (secretKeyBase64 != null && !secretKeyBase64.isEmpty()) {
                 byte[] decodedKey = Base64.getDecoder().decode(secretKeyBase64);
