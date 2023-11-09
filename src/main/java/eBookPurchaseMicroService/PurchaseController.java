@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
@@ -25,15 +27,10 @@ public class PurchaseController {
     public PurchaseController() {
         try {
             // Read the secret key from a file
-            //byte[] keyBytes = Files.readAllBytes(Paths.get("src/main/java/eBookPurchaseMicroService/secret.key"));
-            //secretKey = new SecretKeySpec(keyBytes, "AES");
+                byte[] keyBytes = Files.readAllBytes(Paths.get("src/main/java/eBookPurchaseMicroService/secret.key"));
+            secretKey = new SecretKeySpec(keyBytes, "AES");
             // Read the secret.key from GitHub environment variable
-            String secretKeyBase64 = System.getenv("SECRET_KEY");
-            if (secretKeyBase64 != null && !secretKeyBase64.isEmpty()) {
-                byte[] decodedKey = Base64.getDecoder().decode(secretKeyBase64);
-                secretKey = new SecretKeySpec(decodedKey, "AES"); // Replace "AES" with your key algorithm
-            }
-        } catch (Exception e) {
+                    } catch (Exception e) {
             throw new RuntimeException("Failed to initialize secret key");
         }
     }
@@ -67,14 +64,14 @@ public class PurchaseController {
     public @ResponseBody Iterable<PurchaseInformation> getAllPurchaseDetails() {
         Iterable<PurchaseInformation> purchaseDetails = purchaseRepository.findAll();
 
-        /*for (PurchaseInformation purchase : purchaseDetails) {
+        for (PurchaseInformation purchase : purchaseDetails) {
             // Decrypt the cardNumber and cvv
             String decryptedCardNumber = decrypt(purchase.getCardNumber());
             String decryptedCvv = decrypt(purchase.getCvv());
 
             purchase.setCardNumber(decryptedCardNumber);
             purchase.setCvv(decryptedCvv);
-        }*/
+        }
 
         return purchaseDetails;
     }
@@ -99,7 +96,7 @@ public class PurchaseController {
 
 
     // Method to encrypt data
-    private String encrypt(String data) {
+    public String encrypt(String data) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -111,7 +108,7 @@ public class PurchaseController {
     }
 
     // Method to decrypt data
-    private String decrypt(String encryptedData) {
+    public String decrypt(String encryptedData) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
